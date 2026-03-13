@@ -1,0 +1,21 @@
+{
+  "name": "inkbox-openclaw",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "send-email": "tsx scripts/send-email.ts",
+    "list-emails": "tsx scripts/list-emails.ts",
+    "get-thread": "tsx scripts/get-thread.ts",
+    "search-emails": "tsx scripts/search-emails.ts"
+  },
+  "dependencies": {
+    "@inkbox/sdk": "latest"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
