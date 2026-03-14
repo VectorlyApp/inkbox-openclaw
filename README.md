@@ -41,6 +41,7 @@ console.log(identity.mailbox?.emailAddress); // e.g. abc-xyz@inkboxmail.com
 
 ```bash
 npm install
+mkdir -p ~/.openclaw/skills/inkbox
 cp -r . ~/.openclaw/skills/inkbox
 ```
 
