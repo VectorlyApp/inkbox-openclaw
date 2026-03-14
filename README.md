@@ -25,6 +25,8 @@ Sign in at [console.inkbox.ai](https://console.inkbox.ai) and create an API key.
 
 ### 2. Create an agent identity (if you haven't already)
 
+You can create an identity in the [Inkbox console](https://console.inkbox.ai), or programmatically:
+
 ```ts
 import { Inkbox } from "@inkbox/sdk";
 
