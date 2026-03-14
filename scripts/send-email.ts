@@ -6,14 +6,22 @@ const get = (flag: string) => {
   return i !== -1 ? args[i + 1] : undefined;
 };
 
-const to = get("--to");
+const parseRecipients = (value?: string) =>
+  value
+    ? value
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean)
+    : undefined;
+
+const to = parseRecipients(get("--to"));
 const subject = get("--subject");
 const body = get("--body");
-const cc = get("--cc");
-const bcc = get("--bcc");
+const cc = parseRecipients(get("--cc"));
+const bcc = parseRecipients(get("--bcc"));
 const replyTo = get("--replyTo");
 
-if (!to || !subject || !body) {
+if (!to?.length || !subject || !body) {
   console.error(JSON.stringify({ error: "Missing required args: --to, --subject, --body" }));
   process.exit(1);
 }
@@ -30,11 +38,11 @@ const inkbox = new Inkbox({ apiKey });
 const identity = await inkbox.getIdentity(agentHandle);
 
 const message = await identity.sendEmail({
-  to: [to],
+  to,
   subject,
   bodyText: body,
-  ...(cc ? { cc: [cc] } : {}),
-  ...(bcc ? { bcc: [bcc] } : {}),
+  ...(cc?.length ? { cc } : {}),
+  ...(bcc?.length ? { bcc } : {}),
   ...(replyTo ? { inReplyToMessageId: replyTo } : {}),
 });
 

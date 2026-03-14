@@ -1,6 +1,6 @@
 # inkbox-openclaw
 
-An OpenClaw skill that gives agents email capabilities via [Inkbox](https://www.inkbox.ai) — API-first communication infrastructure for AI agents.
+An OpenClaw skill that gives agents email and phone capabilities via [Inkbox](https://www.inkbox.ai) — API-first communication infrastructure for AI agents.
 
 ## What this is
 
@@ -17,6 +17,9 @@ scripts/
   list-emails.ts      ← List inbox (all or unread)
   get-thread.ts       ← Get a full email thread
   search-emails.ts    ← Full-text search emails
+  place-call.ts       ← Place an outbound phone call
+  list-calls.ts       ← List call history
+  get-transcript.ts   ← Get transcript for a call
 ```
 
 ## SDK
@@ -37,6 +40,9 @@ Key SDK methods used:
 - `identity.iterEmails()` / `identity.iterUnreadEmails()` — async generators, paginated automatically
 - `identity.getThread(threadId)` — returns full thread with all messages
 - `inkbox.mailboxes.search(emailAddress, { q, limit })` — full-text search (requires `identity.mailbox.emailAddress`)
+- `identity.placeCall({ toNumber })` — place outbound call from identity's phone number
+- `identity.listCalls({ limit, offset })` — list call history for identity's phone number
+- `identity.listTranscripts(callId)` — get transcript segments for a call
 
 ## Required env vars
 
@@ -63,8 +69,12 @@ export INKBOX_AGENT_HANDLE=my-agent
 npx tsx scripts/list-emails.ts --limit 5
 npx tsx scripts/list-emails.ts --unread
 npx tsx scripts/send-email.ts --to someone@example.com --subject "Hello" --body "Hi there"
+npx tsx scripts/send-email.ts --to a@example.com,b@example.com --subject "Hello" --body "Hi there"
 npx tsx scripts/get-thread.ts --threadId <thread-uuid>
 npx tsx scripts/search-emails.ts --query "invoice" --limit 10
+npx tsx scripts/place-call.ts --to +15551234567
+npx tsx scripts/list-calls.ts --limit 5
+npx tsx scripts/get-transcript.ts --callId <call-uuid>
 ```
 
 ## Extending this skill
@@ -73,4 +83,5 @@ npx tsx scripts/search-emails.ts --query "invoice" --limit 10
 - **HTML emails**: extend `send-email.ts` to accept `--bodyHtml` and pass `bodyHtml` to `sendEmail()`
 - **Attachments**: `sendEmail()` accepts `attachments: [{ filename, contentType, contentBase64 }]`
 - **Mark as read**: `identity.markEmailsRead(messageIds)` — add a `mark-read.ts` script if needed
-- **Phone (future)**: `identity.placeCall()`, `identity.listCalls()`, `identity.listTranscripts()` — see the main inkbox README for full API
+- **Outbound call webhooks**: pass `--webhookUrl` to `place-call.ts` for call lifecycle events (extend the script to accept this flag)
+- **WebSocket audio bridge**: pass `--clientWebsocketUrl` to `place-call.ts` for real-time audio (extend the script to accept this flag)
