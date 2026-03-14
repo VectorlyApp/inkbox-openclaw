@@ -45,13 +45,75 @@ mkdir -p ~/.openclaw/skills/inkbox
 cp -r . ~/.openclaw/skills/inkbox
 ```
 
-### 4. Configure env vars in OpenClaw
+### 4. Configure env vars
 
-Add to your agent's skill configuration:
+The recommended approach on Linux: put `INKBOX_API_KEY` in the host environment and only `INKBOX_AGENT_HANDLE` in your OpenClaw config.
 
+**Option A — OpenClaw runs manually in a shell**
+
+Add to your shell profile and reload it:
+
+```bash
+# bash
+echo 'export INKBOX_API_KEY="ApiKey_..."' >> ~/.bashrc && source ~/.bashrc
+
+# zsh
+echo 'export INKBOX_API_KEY="ApiKey_..."' >> ~/.zshrc && source ~/.zshrc
 ```
-INKBOX_API_KEY=ApiKey_...
-INKBOX_AGENT_HANDLE=my-agent
+
+Verify with `echo "$INKBOX_API_KEY"`. Any OpenClaw process started from that shell will inherit the variable.
+
+**Option B — OpenClaw runs as a systemd user service**
+
+Create a protected env file:
+
+```bash
+mkdir -p ~/.config/openclaw
+chmod 700 ~/.config/openclaw
+printf 'INKBOX_API_KEY=ApiKey_...\n' > ~/.config/openclaw/gateway.env
+chmod 600 ~/.config/openclaw/gateway.env
+```
+
+Add a systemd override:
+
+```bash
+systemctl --user edit openclaw-gateway.service
+```
+
+Paste this, save, and exit:
+
+```ini
+[Service]
+EnvironmentFile=%h/.config/openclaw/gateway.env
+```
+
+Then reload and restart:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user restart openclaw-gateway.service
+```
+
+> If your service has a profile suffix, find the exact unit name with:
+> `systemctl --user list-units | grep openclaw-gateway`
+
+**OpenClaw config**
+
+Put only the agent handle in `~/.openclaw/openclaw.json` — the API key comes from the environment:
+
+```json5
+{
+  skills: {
+    entries: {
+      inkbox: {
+        enabled: true,
+        env: {
+          INKBOX_AGENT_HANDLE: "my-agent"
+        }
+      }
+    }
+  }
+}
 ```
 
 ## Usage
