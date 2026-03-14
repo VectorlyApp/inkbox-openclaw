@@ -1,10 +1,17 @@
 ---
 name: inkbox
-description: Send and receive emails via Inkbox agent mailboxes
-version: 0.1.0
-author: inkbox
-homepage: https://www.inkbox.ai
-metadata: {"clawdbot":{"emoji":"📬","requires":{"env":["INKBOX_API_KEY","INKBOX_AGENT_HANDLE"],"bins":["node"]},"primaryEnv":"INKBOX_API_KEY"}}
+description: Send and receive emails via Inkbox agent mailboxes. Use when the user wants to check inbox messages, list unread email, view a thread, search mailbox contents, or draft/send an email through an Inkbox agent mailbox.
+metadata:
+  openclaw:
+    emoji: "📬"
+    homepage: "https://www.inkbox.ai"
+    requires:
+      env:
+        - INKBOX_API_KEY
+        - INKBOX_AGENT_HANDLE
+      bins:
+        - node
+    primaryEnv: INKBOX_API_KEY
 ---
 
 # Inkbox Email Skill
