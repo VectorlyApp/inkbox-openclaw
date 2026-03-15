@@ -82,10 +82,11 @@ Once installed, just talk to your OpenClaw agent naturally:
 > "Send an email to alice@example.com with subject 'Hello' and say hi"
 > "Search my email for invoices"
 > "Show me the full thread for that last message"
+> "Call +15551234567"
+> "Show me my recent calls"
+> "Get the transcript for that last call"
 
 ## Scripts
-
-The skill exposes four CLI scripts (invoked by the model automatically):
 
 | Script | Description |
 |---|---|
@@ -93,6 +94,9 @@ The skill exposes four CLI scripts (invoked by the model automatically):
 | `scripts/list-emails.ts` | List inbox messages |
 | `scripts/get-thread.ts` | Get a full email thread |
 | `scripts/search-emails.ts` | Full-text search |
+| `scripts/place-call.ts` | Place an outbound phone call |
+| `scripts/list-calls.ts` | List call history |
+| `scripts/get-transcript.ts` | Get a call transcript |
 
 ### Manual testing
 
@@ -124,6 +128,18 @@ npx tsx scripts/get-thread.ts --threadId <thread-id>
 
 # Search
 npx tsx scripts/search-emails.ts --query "invoice" --limit 5
+
+# Place a call
+npx tsx scripts/place-call.ts --to +15551234567
+
+# Place a call with a WebSocket audio bridge
+npx tsx scripts/place-call.ts --to +15551234567 --clientWebsocketUrl wss://your-server/audio
+
+# List call history
+npx tsx scripts/list-calls.ts --limit 5
+
+# Get a transcript
+npx tsx scripts/get-transcript.ts --callId <call-id>
 ```
 
 ## License
