@@ -7,6 +7,7 @@ const get = (flag: string) => {
 };
 
 const to = get("--to");
+const clientWebsocketUrl = get("--clientWebsocketUrl");
 
 if (!to) {
   console.error(JSON.stringify({ error: "Missing required args: --to" }));
@@ -24,6 +25,9 @@ if (!apiKey || !agentHandle) {
 const inkbox = new Inkbox({ apiKey });
 const identity = await inkbox.getIdentity(agentHandle);
 
-const call = await identity.placeCall({ toNumber: to });
+const call = await identity.placeCall({
+  toNumber: to,
+  ...(clientWebsocketUrl && { clientWebsocketUrl }),
+});
 
 console.log(JSON.stringify(call, null, 2));

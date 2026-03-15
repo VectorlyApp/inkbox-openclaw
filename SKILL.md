@@ -67,9 +67,10 @@ Outputs: JSON array of matching messages.
 
 ### Place a phone call
 ```
-npx tsx scripts/place-call.ts --to <e164-number>
+npx tsx scripts/place-call.ts --to <e164-number> [--clientWebsocketUrl <url>]
 ```
 - `--to` (required) — E.164 destination number (e.g. `+15551234567`)
+- `--clientWebsocketUrl` (optional) — WebSocket URL for real-time audio bridging
 
 Outputs: JSON with the created call record and current rate limit info.
 
